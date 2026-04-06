@@ -6,7 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
-
+	<ItemGroup>
+		<!-- ValueObjects should not depend on Domain to avoid a circular project reference -->
+	</ItemGroup>
 
 </Project>

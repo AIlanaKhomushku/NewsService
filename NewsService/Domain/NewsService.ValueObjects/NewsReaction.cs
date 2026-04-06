@@ -1,4 +1,4 @@
-﻿namespace NewsService.Domain.NewsService.Domain.Enums;
+﻿namespace NewsService.ValueObjects;
 public enum NewsReaction
 {
     Like,

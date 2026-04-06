@@ -2,6 +2,7 @@
 using NewsService.Domain.NewsService.Domain.Enums;
 using NewsService.Domain.NewsService.Domain.Exceptions;
 using NewsService.Domain.NewsService.ValueObjects;
+using NewsService.ValueObjects;
 
 namespace NewsService.Domain.NewsService.Domain
 {
@@ -15,7 +16,7 @@ namespace NewsService.Domain.NewsService.Domain
         public DateTime? ModificationData { get; private set; } = null;//дата изменения в новости
         public NewsStatus NewsStatus { get; private set; } = NewsStatus.Created;
         public Author Author { get; } = default!;
-
+        public ReactionSummery Reactions { get; private set; } = ReactionSummery.Emty;
 
        
 
@@ -116,11 +117,9 @@ namespace NewsService.Domain.NewsService.Domain
         public bool SetReaction(User user,NewsReaction newReaction)
         {
             if (user == null) throw new ArgumentNullValueException(nameof(user));
-            //if (_userreactions.TryGetValue(user, out var current) && current == newReaction)
-            //    return false;
-            //    _userreactions[user] = newReaction;
-           
-                return true;
+            if (NewsStatus != NewsStatus.Published) throw new InvalidNewsStatusForUserActionException("reaction", NewsStatus);
+            Reactions=Reactions.Add(newReaction);
+            return true;
         }
         /// <summary>
         /// переопределяем ToString
@@ -135,7 +134,7 @@ namespace NewsService.Domain.NewsService.Domain
 
             var commentText = _comments.Count == 0 ? "no comment " : string.Join("; ", _comments.Select(c =>$"{c.User.ToString()}: {c.Content.ToString()}"));
             //return $"{Title.ToString()} {Content.ToString()} ({CreationData} {NewsStatus}) {reactionText} - {commentText}";
-            return $"{Title.ToString()} {Content.ToString()} ({CreationData} {NewsStatus}) - {commentText}";
+            return $"{Title.ToString()} {Content.ToString()} {Reactions.ToString()} ({CreationData} {NewsStatus}) - {commentText}";
         }
         /// <summary>
         /// добавляем комментарий
@@ -146,6 +145,7 @@ namespace NewsService.Domain.NewsService.Domain
         public bool SetComment (Comment comment)
         {
             if (comment == null) throw new ArgumentNullValueException(nameof(comment));
+            if (NewsStatus != NewsStatus.Published) throw new InvalidNewsStatusForUserActionException("comment", NewsStatus);
        
             _comments.Add(comment);
             return true;

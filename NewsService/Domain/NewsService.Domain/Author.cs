@@ -1,7 +1,8 @@
 ﻿using NewsService.Domain.NewsService.Domain.Base;
+using NewsService.Domain.NewsService.Domain.Enums;
 using NewsService.Domain.NewsService.Domain.Exceptions;
 using NewsService.Domain.NewsService.ValueObjects;
-using NewsService.Domain.NewsService.Domain.Enums;
+using NewsService.ValueObjects;
 
 namespace NewsService.Domain.NewsService.Domain;
 
