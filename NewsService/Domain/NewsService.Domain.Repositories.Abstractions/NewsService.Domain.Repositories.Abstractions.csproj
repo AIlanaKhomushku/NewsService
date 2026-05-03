@@ -7,4 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\NewsService.Domain\NewsService.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
