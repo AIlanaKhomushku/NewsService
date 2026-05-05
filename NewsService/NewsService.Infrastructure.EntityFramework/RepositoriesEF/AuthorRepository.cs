@@ -15,7 +15,7 @@ public class EfAuthorRepository(ApplicationDbContext context)
         => _authors.Include("_newss")
         .FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
 
-    public Task<Author?> GetUserByAuthornameAsync(string authorname, CancellationToken cancellationToken)
+    public Task<Author?> GetAuthorByAuthornameAsync(string authorname, CancellationToken cancellationToken)
         => _authors.Include("_newss")
         .FirstOrDefaultAsync(a => a.Authorname.Equals(new Authorname(authorname)), cancellationToken);
 }

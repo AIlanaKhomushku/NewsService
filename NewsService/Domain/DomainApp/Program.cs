@@ -21,9 +21,9 @@ internal class Program
 
         josh.UpdateNewsStatus(news, NewsStatus.Published);
         bella.ReactionNews(news, NewsReaction.Sad);
-        bella.CommentNews(news, new Content("i like her"));
+        bella.CommentNews(news, new CommentText("i like her"));
         bella.ReactionNews(news, NewsReaction.Sad);
-        mila.CommentNews(news, new Content("i dont like her"));
+        mila.CommentNews(news, new CommentText("i dont like her"));
         mila.ReactionNews(news, NewsReaction.Laugh);
         var news2 = pit.CreateNews(new Title("mommy"), new Content("yeaaaaah mooom bomb!!!"));
         Console.WriteLine(news.ToString());

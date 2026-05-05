@@ -45,7 +45,7 @@ public class User(Guid id, Username username) : Entity<Guid>(id)
    /// <returns></returns>
    /// <exception cref="ArgumentNullValueException"></exception>
    /// <exception cref="ArgumentNullException"></exception>
-    public bool CommentNews(News news,Content newcontent)
+    public bool CommentNews(News news, CommentText newcontent)
     {
         if (news == null) throw new ArgumentNullValueException(nameof(news));
         if(newcontent==null) throw new ArgumentNullException(nameof(newcontent));

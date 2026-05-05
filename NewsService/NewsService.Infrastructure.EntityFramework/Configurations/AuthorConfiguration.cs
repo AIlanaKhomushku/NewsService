@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NewsService.Domain.NewsService.Domain;
 using NewsService.Domain.NewsService.ValueObjects.Validators;
+using NewsService.Domain.NewsService.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
