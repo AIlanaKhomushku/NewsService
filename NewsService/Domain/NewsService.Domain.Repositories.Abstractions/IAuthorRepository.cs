@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace NewsService.Domain.Repositories.Abstractions;
 
-public interface IAuthorRepository : IRepository<User, Guid>
+public interface IAuthorRepository : IRepository<Author, Guid>
 {
-    // Так как имя пользователя уникальное
-    Task<Author?> GetUserByAuthornameAsync(string Authorname, CancellationToken cancellationToken);
+    Task<Author?> GetAuthorByAuthornameAsync(string authorname, CancellationToken cancellationToken);
 }

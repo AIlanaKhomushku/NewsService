@@ -8,14 +8,14 @@ public class Comment : Entity<Guid>
 {
     public News News { get; } = default!;
     public User User { get; } = default!;
-    public Content Content { get; private set; }
+    public CommentText Content { get; private set; }
     public DateTime CreationData { get; }
 
 
     public Comment(
         News news,
         User user,
-        Content content,
+        CommentText content,
         DateTime creationData
         )
         : this(Guid.NewGuid(), news, user, content, creationData) { }
@@ -23,7 +23,7 @@ public class Comment : Entity<Guid>
         Guid id,
         News news,
         User user,
-        Content content ,
+        CommentText content ,
         DateTime creationData = default
         )
         : base(id)
@@ -42,7 +42,7 @@ public class Comment : Entity<Guid>
     /// <param name="newContent"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullValueException"></exception>
-    public bool SetContent(Content newContent)
+    public bool SetContent(CommentText newContent)
     {
         if( newContent == null ) { throw new ArgumentNullValueException(nameof(newContent)); }
         if(Content == newContent)
