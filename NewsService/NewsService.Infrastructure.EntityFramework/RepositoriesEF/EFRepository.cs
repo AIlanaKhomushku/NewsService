@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using NewsService.Domain.NewsService.Domain.Base;
+using NewsService.Domain.Repositories.Abstractions.Base;
+using NewsService.Infrastructure.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NewsService.Domain.NewsService.Domain.Base;
-using NewsService.Domain.Repositories.Abstractions.Base;
-using NewsService.Infrastructure.EntityFramework;
-using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace NewsService.Infrastructure.EntityFramework.RepositoriesEF;
 
@@ -54,3 +55,5 @@ public class EfRepository<TEntity, TId>(ApplicationDbContext context)
 
     }
 }
+
+
