@@ -6,6 +6,8 @@ namespace NewsService.Domain.NewsService.Domain;
 
 public class Comment : Entity<Guid>
 {
+    public Guid NewsId { get; private set; }
+    public Guid UserId { get; private set; }
     public News News { get; } = default!;
     public User User { get; } = default!;
     public CommentText Content { get; private set; }
@@ -19,11 +21,14 @@ public class Comment : Entity<Guid>
         DateTime creationData
         )
         : this(Guid.NewGuid(), news, user, content, creationData) { }
+
+    private Comment() { }
+
     protected Comment(
         Guid id,
         News news,
         User user,
-        CommentText content ,
+        CommentText content,
         DateTime creationData = default
         )
         : base(id)
@@ -31,6 +36,8 @@ public class Comment : Entity<Guid>
 
         News = news ?? throw new ArgumentNullValueException(nameof(news));
         User = user ?? throw new ArgumentNullValueException(nameof(user));
+        NewsId = news.Id;
+        UserId = user.Id;
         Content = content ?? throw new ArgumentNullValueException(nameof(content));
 
         CreationData = creationData;
@@ -44,8 +51,8 @@ public class Comment : Entity<Guid>
     /// <exception cref="ArgumentNullValueException"></exception>
     public bool SetContent(CommentText newContent)
     {
-        if( newContent == null ) { throw new ArgumentNullValueException(nameof(newContent)); }
-        if(Content == newContent)
+        if (newContent == null) { throw new ArgumentNullValueException(nameof(newContent)); }
+        if (Content == newContent)
         {
             return false;
         }

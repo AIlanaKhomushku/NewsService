@@ -13,7 +13,7 @@ if (string.IsNullOrEmpty(connectionString))
 {
     throw new InvalidOperationException("Connection string for NewsServiceDbContext is not configured.");
 }
-s
+
 builder.Services.AddNpgsql<ApplicationDbContext>(connectionString, options =>
 {
     options.MigrationsAssembly("NewsService.Infrastructure.EntityFramework");

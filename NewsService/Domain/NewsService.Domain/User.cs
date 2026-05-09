@@ -7,9 +7,12 @@ namespace NewsService.Domain.NewsService.Domain;
 
 public class User(Guid id, Username username) : Entity<Guid>(id)
 {
-    private readonly ICollection<Comment>_comments=[];
+    private readonly ICollection<Comment> _comments = [];
     public IReadOnlyCollection<Comment> Comments => _comments.ToList().AsReadOnly();
-    
+
+    private readonly ICollection<Reaction> _reactions = [];
+    public IReadOnlyCollection<Reaction> Reactions => _reactions.ToList().AsReadOnly();
+
     public Username Username { get; private set; } = username ?? throw new ArgumentNullValueException(nameof(username));
 
 
@@ -30,26 +33,26 @@ public class User(Guid id, Username username) : Entity<Guid>(id)
     /// ReactionNews the user's username. 
     /// </summary>
     /// <param name="newUsername">New user's username.</param>
-    public bool ReactionNews(News news,NewsReaction newsReaction)
+    public bool ReactionNews(News news, NewsReaction newsReaction)
     {
-        if(news == null) throw new ArgumentNullValueException(nameof(news));
-        return news.SetReaction(this,newsReaction);
-        
+        if (news == null) throw new ArgumentNullValueException(nameof(news));
+        return news.SetReaction(this, newsReaction);
+
     }
-    
-   /// <summary>
-   /// комментировать новости
-   /// </summary>
-   /// <param name="news"></param>
-   /// <param name="newcontent"></param>
-   /// <returns></returns>
-   /// <exception cref="ArgumentNullValueException"></exception>
-   /// <exception cref="ArgumentNullException"></exception>
+
+    /// <summary>
+    /// комментировать новости
+    /// </summary>
+    /// <param name="news"></param>
+    /// <param name="newcontent"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullValueException"></exception>
+    /// <exception cref="ArgumentNullException"></exception>
     public bool CommentNews(News news, CommentText newcontent)
     {
         if (news == null) throw new ArgumentNullValueException(nameof(news));
-        if(newcontent==null) throw new ArgumentNullException(nameof(newcontent));
-        var comm=(new Comment(news, this, newcontent, DateTime.UtcNow));
+        if (newcontent == null) throw new ArgumentNullException(nameof(newcontent));
+        var comm = (new Comment(news, this, newcontent, DateTime.UtcNow));
         news.SetComment(comm);
         _comments.Add(comm);
 

@@ -24,9 +24,17 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasConversion(username => username.Value, str => new Username(str))
             .HasMaxLength(UsernameValidator.MAX_LENGTH);
 
-        builder.HasMany<Comment>()
+        builder.HasMany<Comment>("Comments")
             .WithOne(c => c.User)
-            .HasForeignKey("UserId")
+            .HasForeignKey(c => c.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+        builder.Metadata.FindNavigation(nameof(User.Comments))?.SetPropertyAccessMode(PropertyAccessMode.Field);
+
+        builder.HasMany<Reaction>(u => u.Reactions)
+            .WithOne(r => r.User)
+            .HasForeignKey(r => r.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Metadata.FindNavigation(nameof(User.Reactions))?.SetPropertyAccessMode(PropertyAccessMode.Field);
     }
 }

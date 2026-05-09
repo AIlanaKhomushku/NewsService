@@ -23,9 +23,12 @@ public class AuthorConfiguration : IEntityTypeConfiguration<Author>
             .HasConversion(an => an.Value, str => new Authorname(str))
             .HasMaxLength(AuthornameValidator.MAX_LENGTH);
 
-        builder.HasMany <News>("_newss")
+        // PublishedNews is a computed projection; ignore it for EF mapping and map the underlying field
+        builder.Ignore(a => a.PublishedNews);
+
+        builder.HasMany<News>("_newss")
             .WithOne(n => n.Author)
-            .HasForeignKey("AuthorId")
+            .HasForeignKey(n => n.AuthorId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.Metadata.FindNavigation("_newss")?.SetPropertyAccessMode(PropertyAccessMode.Field);

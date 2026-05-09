@@ -40,19 +40,12 @@ public class NewsConfiguration : IEntityTypeConfiguration<News>
 
         builder.Property(n => n.ModificationData).IsRequired(false);
 
-        builder.Property(n => n.Reactions)
-            .HasConversion(r => r.ToString(), str => ReactionSummery.FromString(str));
-
-        builder.HasOne(n => n.Author)
-            .WithMany("_newss")
-            .HasForeignKey("AuthorId")
+        // Foreign key relationships configured in CommentConfiguration
+        builder.HasMany<Reaction>(n => n.Reactions)
+            .WithOne(r => r.News)
+            .HasForeignKey(r => r.NewsId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasMany<Comment>("_comments")
-            .WithOne(c => c.News)
-            .HasForeignKey("NewsId")
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.Metadata.FindNavigation("_comments").SetPropertyAccessMode(PropertyAccessMode.Field);
+        builder.Metadata.FindNavigation(nameof(News.Reactions))?.SetPropertyAccessMode(PropertyAccessMode.Field);
     }
 }
