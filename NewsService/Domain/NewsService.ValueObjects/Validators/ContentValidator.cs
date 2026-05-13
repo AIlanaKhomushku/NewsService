@@ -1,10 +1,6 @@
 ﻿using NewsService.Domain.NewsService.ValueObjects.Base;
 using NewsService.Domain.NewsService.ValueObjects.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace NewsService.Domain.NewsService.ValueObjects.Validators;
 

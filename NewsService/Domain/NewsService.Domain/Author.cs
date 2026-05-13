@@ -38,9 +38,11 @@ public class Author(Guid id, Authorname authorname) : Entity<Guid>(id)
     /// <returns></returns>
     public News CreateNews(Title title, Content content)
     {
+       
         var news = new News(title, content, this, DateTime.UtcNow);
+        if (!_newss.Contains(news)) throw new NewsNotBelongAuthorException(news, this);
         _newss.Add(news);
-
+        
         return news;
     }
     /// <summary>

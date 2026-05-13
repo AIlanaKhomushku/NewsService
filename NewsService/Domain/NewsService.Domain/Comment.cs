@@ -6,8 +6,7 @@ namespace NewsService.Domain.NewsService.Domain;
 
 public class Comment : Entity<Guid>
 {
-    public Guid NewsId { get; private set; }
-    public Guid UserId { get; private set; }
+
     public News News { get; } = default!;
     public User User { get; } = default!;
     public CommentText Content { get; private set; }
@@ -36,8 +35,7 @@ public class Comment : Entity<Guid>
 
         News = news ?? throw new ArgumentNullValueException(nameof(news));
         User = user ?? throw new ArgumentNullValueException(nameof(user));
-        NewsId = news.Id;
-        UserId = user.Id;
+
         Content = content ?? throw new ArgumentNullValueException(nameof(content));
 
         CreationData = creationData;

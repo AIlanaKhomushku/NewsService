@@ -15,7 +15,7 @@ namespace NewsService.Domain.NewsService.Domain
         public DateTime CreationData { get; }
         public DateTime? ModificationData { get; private set; } = null;//дата изменения в новости
         public NewsStatus NewsStatus { get; private set; } = NewsStatus.Created;
-        public Guid AuthorId { get; private set; }
+    
         public Author Author { get; } = default!;
         private readonly ICollection<Reaction> _reactions = [];
         public IReadOnlyCollection<Reaction> Reactions => _reactions.ToList().AsReadOnly();
@@ -44,7 +44,7 @@ namespace NewsService.Domain.NewsService.Domain
             : base(id)
         {
             Author = author ?? throw new ArgumentNullValueException(nameof(author));
-            AuthorId = author.Id;
+
             Content = content ?? throw new ArgumentNullValueException(nameof(content));
             Title = title ?? throw new ArgumentNullValueException(nameof(title));
 
