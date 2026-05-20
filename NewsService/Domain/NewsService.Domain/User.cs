@@ -48,11 +48,11 @@ public class User(Guid id, Username username) : Entity<Guid>(id)
     /// <returns></returns>
     /// <exception cref="ArgumentNullValueException"></exception>
     /// <exception cref="ArgumentNullException"></exception>
-    public bool CommentNews(News news, CommentText newcontent)
+    public bool CommentNews(News news, CommentText newcontent,DateTime dateTime)
     {
-        if (news == null) throw new ArgumentNullValueException(nameof(news));
+        if (news is null) throw new ArgumentNullValueException(nameof(news));
         if (newcontent == null) throw new ArgumentNullException(nameof(newcontent));
-        var comm = (new Comment(news, this, newcontent, DateTime.UtcNow));
+        var comm = (new Comment(news, this, newcontent, dateTime));
         news.SetComment(comm);
         _comments.Add(comm);
 

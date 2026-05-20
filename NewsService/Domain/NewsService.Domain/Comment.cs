@@ -21,14 +21,14 @@ public class Comment : Entity<Guid>
         )
         : this(Guid.NewGuid(), news, user, content, creationData) { }
 
-    private Comment() { }
+    protected Comment() { }
 
     protected Comment(
         Guid id,
         News news,
         User user,
         CommentText content,
-        DateTime creationData = default
+        DateTime creationData 
         )
         : base(id)
     {
@@ -49,7 +49,7 @@ public class Comment : Entity<Guid>
     /// <exception cref="ArgumentNullValueException"></exception>
     public bool SetContent(CommentText newContent)
     {
-        if (newContent == null) { throw new ArgumentNullValueException(nameof(newContent)); }
+        if (newContent is null) { throw new ArgumentNullValueException(nameof(newContent)); }
         if (Content == newContent)
         {
             return false;

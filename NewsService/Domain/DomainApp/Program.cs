@@ -21,12 +21,12 @@ internal class Program
 
         josh.UpdateNewsStatus(news, NewsStatus.Published);
         bella.ReactionNews(news, NewsReaction.Sad);
-        bella.CommentNews(news, new CommentText("i like her"));
-        bella.ReactionNews(news, NewsReaction.Sad);
-        mila.CommentNews(news, new CommentText("i dont like her"));
-        mila.ReactionNews(news, NewsReaction.Laugh);
+        bella.CommentNews(news, new CommentText("i like her"),DateTime.Now);
+        mila.CommentNews(news, new CommentText("i dont like her"), DateTime.Now);
+        mila.ReactionNews(news, NewsReaction.Sad);
         var news2 = pit.CreateNews(new Title("mommy"), new Content("yeaaaaah mooom bomb!!!"));
         Console.WriteLine(news.ToString());
+        Console.WriteLine(news2.ToString());
 
     }
 }

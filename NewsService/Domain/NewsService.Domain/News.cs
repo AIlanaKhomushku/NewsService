@@ -107,8 +107,9 @@ namespace NewsService.Domain.NewsService.Domain
         /// <param name="newStatus"></param>
         /// <returns
        
-        public bool SetStatus(NewsStatus newStatus)
+        public bool SetStatus(Author author, NewsStatus newStatus)
         {
+            if(author is null) throw new ArgumentNullValueException(nameof(author));
             if (NewsStatus == newStatus) return false;
             NewsStatus = newStatus;
             return true;
@@ -123,7 +124,7 @@ namespace NewsService.Domain.NewsService.Domain
             if (user == null) throw new ArgumentNullValueException(nameof(user));
             if (NewsStatus != NewsStatus.Published) throw new InvalidNewsStatusForUserActionException("reaction", NewsStatus);
 
-            var existing = _reactions.FirstOrDefault(r => r.UserId == user.Id);
+            var existing = _reactions.FirstOrDefault(r => r.User.Id == user.Id);
             if (existing != null)
             {
                 if (existing.Type == newReaction) return false;
@@ -159,7 +160,7 @@ namespace NewsService.Domain.NewsService.Domain
         /// <exception cref="ArgumentNullValueException"></exception>
         public bool SetComment(Comment comment)
         {
-            if (comment == null) throw new ArgumentNullValueException(nameof(comment));
+            if (comment is null) throw new ArgumentNullValueException(nameof(comment));
             if (NewsStatus != NewsStatus.Published) throw new InvalidNewsStatusForUserActionException("comment", NewsStatus);
 
             _comments.Add(comment);

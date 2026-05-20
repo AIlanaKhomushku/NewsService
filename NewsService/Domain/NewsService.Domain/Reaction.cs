@@ -26,7 +26,7 @@ public class Reaction : Entity<Guid>
         CreationDate = creationDate;
     }
 
-    private Reaction() { }
+    protected Reaction() { }
 
     internal void UpdateType(NewsReaction newType)
     {
