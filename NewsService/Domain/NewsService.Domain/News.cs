@@ -15,7 +15,7 @@ namespace NewsService.Domain.NewsService.Domain
         public DateTime CreationData { get; }
         public DateTime? ModificationData { get; private set; } = null;//дата изменения в новости
         public NewsStatus NewsStatus { get; private set; } = NewsStatus.Created;
-        public Guid AuthorId { get; private set; }
+    
         public Author Author { get; } = default!;
         private readonly ICollection<Reaction> _reactions = [];
         public IReadOnlyCollection<Reaction> Reactions => _reactions.ToList().AsReadOnly();
@@ -44,7 +44,7 @@ namespace NewsService.Domain.NewsService.Domain
             : base(id)
         {
             Author = author ?? throw new ArgumentNullValueException(nameof(author));
-            AuthorId = author.Id;
+
             Content = content ?? throw new ArgumentNullValueException(nameof(content));
             Title = title ?? throw new ArgumentNullValueException(nameof(title));
 
@@ -107,8 +107,9 @@ namespace NewsService.Domain.NewsService.Domain
         /// <param name="newStatus"></param>
         /// <returns
        
-        public bool SetStatus(NewsStatus newStatus)
+        public bool SetStatus(Author author, NewsStatus newStatus)
         {
+            if(author is null) throw new ArgumentNullValueException(nameof(author));
             if (NewsStatus == newStatus) return false;
             NewsStatus = newStatus;
             return true;
@@ -123,7 +124,7 @@ namespace NewsService.Domain.NewsService.Domain
             if (user == null) throw new ArgumentNullValueException(nameof(user));
             if (NewsStatus != NewsStatus.Published) throw new InvalidNewsStatusForUserActionException("reaction", NewsStatus);
 
-            var existing = _reactions.FirstOrDefault(r => r.UserId == user.Id);
+            var existing = _reactions.FirstOrDefault(r => r.User.Id == user.Id);
             if (existing != null)
             {
                 if (existing.Type == newReaction) return false;
@@ -159,7 +160,7 @@ namespace NewsService.Domain.NewsService.Domain
         /// <exception cref="ArgumentNullValueException"></exception>
         public bool SetComment(Comment comment)
         {
-            if (comment == null) throw new ArgumentNullValueException(nameof(comment));
+            if (comment is null) throw new ArgumentNullValueException(nameof(comment));
             if (NewsStatus != NewsStatus.Published) throw new InvalidNewsStatusForUserActionException("comment", NewsStatus);
 
             _comments.Add(comment);

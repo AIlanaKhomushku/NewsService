@@ -6,8 +6,7 @@ namespace NewsService.Domain.NewsService.Domain;
 
 public class Reaction : Entity<Guid>
 {
-    public Guid NewsId { get; private set; }
-    public Guid UserId { get; private set; }
+
     public News News { get; private set; } = default!;
     public User User { get; private set; } = default!;
     public NewsReaction Type { get; private set; }
@@ -22,13 +21,12 @@ public class Reaction : Entity<Guid>
     {
         News = news ?? throw new ArgumentNullException(nameof(news));
         User = user ?? throw new ArgumentNullException(nameof(user));
-        NewsId = news.Id;
-        UserId = user.Id;
+
         Type = type;
         CreationDate = creationDate;
     }
 
-    private Reaction() { }
+    protected Reaction() { }
 
     internal void UpdateType(NewsReaction newType)
     {

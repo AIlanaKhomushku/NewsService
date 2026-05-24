@@ -38,9 +38,12 @@ public class Author(Guid id, Authorname authorname) : Entity<Guid>(id)
     /// <returns></returns>
     public News CreateNews(Title title, Content content)
     {
+       if(title == null) throw new ArgumentNullValueException(nameof(title));
+         if(content == null) throw new ArgumentNullValueException(nameof(content));
         var news = new News(title, content, this, DateTime.UtcNow);
+        if (_newss.Contains(news)) throw new NewsNotBelongAuthorException(news, this);
         _newss.Add(news);
-
+        
         return news;
     }
     /// <summary>
@@ -56,6 +59,8 @@ public class Author(Guid id, Authorname authorname) : Entity<Guid>(id)
     {
         if (news.Author != this) throw new AnotherAuthorEditNewsException(news, this);
         if (!_newss.Contains(news)) throw new NewsNotBelongAuthorException(news, this);
+        if(news.NewsStatus != NewsStatus.Created)
+            throw new InvalidNewsStatusException(news,news.NewsStatus);
         var isChangeTitle = news.SetTitle(title);
         var isChangeContent = news.SetContent(content);
         var isEdit = isChangeTitle || isChangeContent;
@@ -67,13 +72,15 @@ public class Author(Guid id, Authorname authorname) : Entity<Guid>(id)
     /// </summary>
     /// <param name="news"></param>
     /// <exception cref="ArgumentNullValueException"></exception>
-    /// <exception cref="AnotherUserDeleteNewsException"></exception>
+    /// <exception cref="AnotherAuthorDeleteNewsException"></exception>
     /// <exception cref="NewsNotBelongAuthorException"></exception>
     public void DeleteNews(News news)
     {
         if (news == null) throw new ArgumentNullValueException(nameof(news));
-        if (news.Author != this) throw new AnotherUserDeleteNewsException(news, this);
+        if (news.Author != this) throw new AnotherAuthorDeleteNewsException(news, this);
         if (!_newss.Contains(news)) throw new NewsNotBelongAuthorException(news, this);
+        if(news.NewsStatus == NewsStatus.Deleted)
+            throw new InvalidNewsStatusException(news,news.NewsStatus);
 
         _newss.Remove(news);
     }
@@ -88,7 +95,7 @@ public class Author(Guid id, Authorname authorname) : Entity<Guid>(id)
     /// <exception cref="NewsNotBelongAuthorException"></exception>
     public bool UpdateNewsStatus(News news, NewsStatus newStatus)
     {
-        if (news == null)
+        if (news is null)
             throw new ArgumentNullValueException(nameof(news));
 
         if (news.Author != this)
@@ -96,7 +103,9 @@ public class Author(Guid id, Authorname authorname) : Entity<Guid>(id)
 
         if (!_newss.Contains(news))
             throw new NewsNotBelongAuthorException(news, this);
+        if(news.NewsStatus==NewsStatus.Deleted)
+            throw new InvalidNewsStatusException(news, news.NewsStatus);
 
-        return news.SetStatus(newStatus);
+        return news.SetStatus(this,newStatus);
     }
 }
