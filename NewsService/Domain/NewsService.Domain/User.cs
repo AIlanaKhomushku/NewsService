@@ -33,10 +33,10 @@ public class User(Guid id, Username username) : Entity<Guid>(id)
     /// ReactionNews the user's username. 
     /// </summary>
     /// <param name="newUsername">New user's username.</param>
-    public bool ReactionNews(News news, NewsReaction newsReaction)
+    public bool ReactionNews(News news, NewsReaction newsReaction,DateTime creationtime)
     {
         if (news == null) throw new ArgumentNullValueException(nameof(news));
-        return news.SetReaction(this, newsReaction);
+        return news.SetReaction(this, newsReaction,creationtime);
 
     }
 

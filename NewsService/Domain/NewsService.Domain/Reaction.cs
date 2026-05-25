@@ -1,4 +1,5 @@
 ﻿using NewsService.Domain.NewsService.Domain.Base;
+using NewsService.Domain.NewsService.Domain.Exceptions;
 using NewsService.ValueObjects;
 using System;
 
@@ -12,8 +13,8 @@ public class Reaction : Entity<Guid>
     public NewsReaction Type { get; private set; }
     public DateTime CreationDate { get; private set; }
 
-    public Reaction(News news, User user, NewsReaction type)
-        : this(Guid.NewGuid(), news, user, type, DateTime.UtcNow)
+    public Reaction(News news, User user, NewsReaction type,DateTime creationDate)
+        : this(Guid.NewGuid(), news, user, type, creationDate)
     { }
 
     protected Reaction(Guid id, News news, User user, NewsReaction type, DateTime creationDate)
@@ -28,8 +29,9 @@ public class Reaction : Entity<Guid>
 
     protected Reaction() { }
 
-    internal void UpdateType(NewsReaction newType)
+    internal void UpdateType(NewsReaction newType, User user)
     {
+        if(User.Id != user.Id) throw new AnotherUserException(user, this);
         Type = newType;
         CreationDate = DateTime.UtcNow;
     }

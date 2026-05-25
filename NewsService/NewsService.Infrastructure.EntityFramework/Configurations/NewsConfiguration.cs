@@ -40,10 +40,10 @@ public class NewsConfiguration : IEntityTypeConfiguration<News>
 
         builder.Property(n => n.ModificationData).IsRequired(false);
 
-        // Foreign key relationships configured in CommentConfiguration
+        // Foreign key relationships configured in ReactionConfiguration
         builder.HasMany<Reaction>(n => n.Reactions)
             .WithOne(r => r.News)
-            .HasForeignKey(r => r.NewsId)
+            .HasForeignKey("NewsId")
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.Metadata.FindNavigation(nameof(News.Reactions))?.SetPropertyAccessMode(PropertyAccessMode.Field);

@@ -26,13 +26,13 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasMany<Comment>("Comments")
             .WithOne(c => c.User)
-            .HasForeignKey(c => c.UserId)
+            .HasForeignKey("UserId")
             .OnDelete(DeleteBehavior.Cascade);
         builder.Metadata.FindNavigation(nameof(User.Comments))?.SetPropertyAccessMode(PropertyAccessMode.Field);
 
         builder.HasMany<Reaction>(u => u.Reactions)
-            .WithOne(r => r.User)
-            .HasForeignKey(r => r.UserId)
+            .WithOne(r => r.User)       
+            .HasForeignKey("UserId")
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.Metadata.FindNavigation(nameof(User.Reactions))?.SetPropertyAccessMode(PropertyAccessMode.Field);

@@ -20,8 +20,8 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
         builder.ToTable("Comments");
         builder.HasKey(c => c.Id);
 
-        builder.Property(c => c.NewsId).IsRequired();
-        builder.Property(c => c.UserId).IsRequired();
+        builder.Property<Guid>("NewsId").IsRequired();
+        builder.Property<Guid>("UserId").IsRequired();
 
         builder.Property(c => c.Content)
             .IsRequired()
@@ -31,13 +31,13 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
         builder.Property(c => c.CreationData).IsRequired();
 
         builder.HasOne(c => c.News)
-            .WithMany("Comments")
-            .HasForeignKey(c => c.NewsId)
+            .WithMany(n => n.Comments)
+            .HasForeignKey("NewsId")
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(c => c.User)
-            .WithMany("Comments")
-            .HasForeignKey(c => c.UserId)
+            .WithMany(u => u.Comments)
+            .HasForeignKey("UserId")
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.Metadata.FindNavigation(nameof(News.Comments))?.SetPropertyAccessMode(PropertyAccessMode.Field);

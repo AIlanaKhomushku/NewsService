@@ -20,10 +20,10 @@ internal class Program
 
 
         josh.UpdateNewsStatus(news, NewsStatus.Published);
-        bella.ReactionNews(news, NewsReaction.Sad);
+        bella.ReactionNews(news, NewsReaction.Sad,DateTime.UtcNow);
         bella.CommentNews(news, new CommentText("i like her"),DateTime.Now);
         mila.CommentNews(news, new CommentText("i dont like her"), DateTime.Now);
-        mila.ReactionNews(news, NewsReaction.Sad);
+        mila.ReactionNews(news, NewsReaction.Sad, DateTime.UtcNow);
         var news2 = pit.CreateNews(new Title("mommy"), new Content("yeaaaaah mooom bomb!!!"));
         Console.WriteLine(news.ToString());
         Console.WriteLine(news2.ToString());

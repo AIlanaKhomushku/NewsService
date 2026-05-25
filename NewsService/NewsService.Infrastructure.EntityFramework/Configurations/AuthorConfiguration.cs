@@ -28,7 +28,7 @@ public class AuthorConfiguration : IEntityTypeConfiguration<Author>
 
         builder.HasMany<News>("_newss")
             .WithOne(n => n.Author)
-            .HasForeignKey(n => n.AuthorId)
+            .HasForeignKey("AuthorId")
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.Metadata.FindNavigation("_newss")?.SetPropertyAccessMode(PropertyAccessMode.Field);

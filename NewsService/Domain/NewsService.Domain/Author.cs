@@ -61,10 +61,10 @@ public class Author(Guid id, Authorname authorname) : Entity<Guid>(id)
         if (!_newss.Contains(news)) throw new NewsNotBelongAuthorException(news, this);
         if(news.NewsStatus != NewsStatus.Created)
             throw new InvalidNewsStatusException(news,news.NewsStatus);
-        var isChangeTitle = news.SetTitle(title);
-        var isChangeContent = news.SetContent(content);
+        var isChangeTitle = news.SetTitle(title,this);
+        var isChangeContent = news.SetContent(content,this);
         var isEdit = isChangeTitle || isChangeContent;
-        if (isEdit) { news.SetModificationData(DateTime.UtcNow); }
+        if (isEdit) { news.SetModificationData(DateTime.UtcNow,this); }
         return isEdit;
     }
     /// <summary>

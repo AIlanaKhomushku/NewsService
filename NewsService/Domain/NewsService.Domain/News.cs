@@ -61,8 +61,10 @@ namespace NewsService.Domain.NewsService.Domain
         /// <returns></returns>
         /// <exception cref="ArgumentNullValueException"></exception>
 
-        public bool SetTitle(Title newtitle)
+        public bool SetTitle(Title newtitle, Author author)
         {
+            if(author is null) throw new ArgumentNullValueException(nameof(author));
+                if (Author.Id != author.Id) throw new AnotherAuthorEditNewsException(this, author);
             if (newtitle == null) throw new ArgumentNullValueException(nameof(newtitle));
             if (Title == newtitle)
                 return false;
@@ -75,8 +77,10 @@ namespace NewsService.Domain.NewsService.Domain
         /// <param name="newContent"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullValueException"></exception>
-        public bool SetContent(Content newContent)
+        public bool SetContent(Content newContent,Author author)
         {
+            if (author is null) throw new ArgumentNullValueException(nameof(author));
+            if(Author.Id != author.Id) throw new AnotherAuthorEditNewsException(this, author);
             if (newContent == null) throw new ArgumentNullValueException(nameof(newContent));
             if (Content == newContent)
                 return false;
@@ -91,8 +95,10 @@ namespace NewsService.Domain.NewsService.Domain
         /// <exception cref="ArgumentNullValueException"></exception>
         /// <exception cref="InvalidModificationDataException"></exception>
 
-        public bool SetModificationData(DateTime modificationData)
+        public bool SetModificationData(DateTime modificationData, Author author)
         {
+            if(author is null) throw new ArgumentNullValueException(nameof(author));
+            if(Author.Id != author.Id) throw new AnotherAuthorEditNewsException(this, author);
             if (CreationData > modificationData) throw new InvalidModificationDataException(this, modificationData);
             if (ModificationData > modificationData) throw new InvalidModificationDataException(this, modificationData);
             if (ModificationData == modificationData)
@@ -110,6 +116,7 @@ namespace NewsService.Domain.NewsService.Domain
         public bool SetStatus(Author author, NewsStatus newStatus)
         {
             if(author is null) throw new ArgumentNullValueException(nameof(author));
+            if(Author.Id != author.Id) throw new AnotherAuthorEditNewsException(this, author);
             if (NewsStatus == newStatus) return false;
             NewsStatus = newStatus;
             return true;
@@ -119,20 +126,20 @@ namespace NewsService.Domain.NewsService.Domain
         /// </summary>
         /// <param name="newReaction"></param>
         /// <returns></returns>
-        public bool SetReaction(User user, NewsReaction newReaction)
+        public bool SetReaction(User user, NewsReaction newReaction,DateTime creationtime)
         {
             if (user == null) throw new ArgumentNullValueException(nameof(user));
-            if (NewsStatus != NewsStatus.Published) throw new InvalidNewsStatusForUserActionException("reaction", NewsStatus);
+            if (NewsStatus != NewsStatus.Published) throw new InvalidNewsStatusForUserActionException(this, NewsStatus);
 
             var existing = _reactions.FirstOrDefault(r => r.User.Id == user.Id);
             if (existing != null)
             {
                 if (existing.Type == newReaction) return false;
-                existing.UpdateType(newReaction);
+                existing.UpdateType(newReaction,user);
                 return true;
             }
 
-            var reaction = new Reaction(this, user, newReaction);
+            var reaction = new Reaction(this, user, newReaction, creationtime);
             _reactions.Add(reaction);
             return true;
         }
@@ -161,7 +168,7 @@ namespace NewsService.Domain.NewsService.Domain
         public bool SetComment(Comment comment)
         {
             if (comment is null) throw new ArgumentNullValueException(nameof(comment));
-            if (NewsStatus != NewsStatus.Published) throw new InvalidNewsStatusForUserActionException("comment", NewsStatus);
+            if (NewsStatus != NewsStatus.Published) throw new InvalidNewsStatusForUserActionException(this, NewsStatus);
 
             _comments.Add(comment);
             return true;
