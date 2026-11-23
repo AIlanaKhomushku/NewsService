@@ -29,7 +29,7 @@ public class Reaction : Entity<Guid>
 
     protected Reaction() { }
 
-    internal void UpdateType(NewsReaction newType, User user)
+    public void UpdateType(NewsReaction newType, User user)
     {
         if(User.Id != user.Id) throw new AnotherUserException(user, this);
         Type = newType;

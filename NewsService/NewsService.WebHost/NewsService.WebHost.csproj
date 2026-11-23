@@ -19,6 +19,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NewsService.Infrastructure.EntityFramework\NewsService.Infrastructure.EntityFramework.csproj" />
+    <ProjectReference Include="..\NewsService.Application\NewsService.Application.Models\NewsService.Application.Models.csproj" />
+    <ProjectReference Include="..\NewsService.Application\NewsService.Application.Service\NewsService.Application.Service.csproj" />
   </ItemGroup>
 
   <ItemGroup>

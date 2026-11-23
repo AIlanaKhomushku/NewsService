@@ -20,7 +20,7 @@ public class User(Guid id, Username username) : Entity<Guid>(id)
     /// Changes the user's username. 
     /// </summary>
     /// <param name="newUsername">New user's username.</param>
-    internal bool ChangeUsername(Username newUsername)
+    public bool ChangeUsername(Username newUsername)
     {
         if (newUsername == null) throw new ArgumentNullValueException(nameof(newUsername));
 

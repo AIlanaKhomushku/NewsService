@@ -13,10 +13,10 @@ public class EfUserRepository(ApplicationDbContext context)
     private readonly DbSet<User> _users = context.Set<User>();
 
     public override Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
-        => _users.Include("_comments")
+        => _users.Include(user => user.Comments)
         .FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
 
     public Task<User?> GetUserByUsernameAsync(string username, CancellationToken cancellationToken)
-        => _users.Include("_comments")
+        => _users.Include(user => user.Comments)
         .FirstOrDefaultAsync(u => u.Username.Equals(new Username(username)), cancellationToken);
 }

@@ -16,7 +16,7 @@ public class EfRepository<TEntity, TId>(ApplicationDbContext context)
         where TEntity : Entity<TId>
         where TId : struct, IEquatable<TId>
 {
-    public async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken, bool asNoTracking = false)
+    public virtual async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken, bool asNoTracking = false)
         => await (asNoTracking ? context.Set<TEntity>().AsNoTracking() : context.Set<TEntity>())
         .ToListAsync(cancellationToken);
 

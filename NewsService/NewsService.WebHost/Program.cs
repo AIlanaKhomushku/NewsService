@@ -2,7 +2,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using NewsService.WebHost.Helpers;
 using NewsService.Infrastructure.EntityFramework;
-using NewsService.WebHost.Helpers;
+using NewsService.Infrastructure.EntityFramework.RepositoriesEF;
+using NewsService.Domain.Repositories.Abstractions;
+using NewsService.Application.Services;
+using NewsService.Application.Services.Abstractions;
+using NewsService.Application.Services.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,14 +36,31 @@ builder.Services.AddSwaggerGen(
     });
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddExceptionHandler<InvalidNewsStatusExceptionHandler>();
+builder.Services.AddProblemDetails();
+
+builder.Services.AddScoped<IAuthorRepository, EfAuthorRepository>();
+builder.Services.AddScoped<IUserRepository, EfUserRepository>();
+builder.Services.AddScoped<INewsRepository, EfNewsRepository>();
+builder.Services.AddScoped<ICommentRepository, EfCommentRepository>();
+builder.Services.AddScoped<IReactionRepository, EfReactionRepository>();
+
+builder.Services.AddScoped<IAuthorApplicationService, AuthorApplicationService>();
+builder.Services.AddScoped<IUserApplicationService, UserApplicationService>();
+builder.Services.AddScoped<INewsApplicationService, NewsApplicationService>();
+builder.Services.AddScoped<ICommentApplicationService, CommentApplicationService>();
+builder.Services.AddScoped<IReactionApplicationService, ReactionApplicationService>();
+builder.Services.AddAutoMapper(configuration =>
+{
+    configuration.AddProfile<ApplicationProfile>();
+});
 
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseExceptionHandler();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

@@ -21,7 +21,7 @@ public class Author(Guid id, Authorname authorname) : Entity<Guid>(id)
     /// <param name="newAuthorname"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullValueException"></exception>
-    internal bool ChangeAuthorname(Authorname newAuthorname)
+    public bool ChangeAuthorname(Authorname newAuthorname)
     {
         if (newAuthorname == null) throw new ArgumentNullValueException(nameof(newAuthorname));
 
